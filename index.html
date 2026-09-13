@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>...</title>
     <style>
         body, html {
@@ -15,6 +15,7 @@
             cursor: none;
             user-select: none;
             -webkit-user-select: none;
+            touch-action: none;
         }
 
         canvas {
@@ -114,6 +115,7 @@
             overflow: hidden;
             transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             user-select: none;
+            cursor: none;
         }
 
         .meat-menu-overlay.hidden {
@@ -137,7 +139,7 @@
             align-items: center;
             justify-content: center;
             position: relative;
-            cursor: pointer;
+            cursor: none;
             overflow: hidden;
             clip-path: circle(50% at center);
             transition: transform 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28), filter 0.2s ease, border-color 0.2s ease;
@@ -193,6 +195,7 @@
             font-family: monospace;
             color: rgba(255, 51, 51, 0.6);
             text-align: center;
+            cursor: none;
         }
 
         .printer-hud.unlocked {
@@ -206,7 +209,7 @@
             font-size: 0.7rem;
             background: rgba(255, 0, 0, 0.02);
             transition: all 0.2s;
-            cursor: pointer;
+            cursor: none;
             letter-spacing: 0.1em;
         }
 
@@ -224,7 +227,7 @@
             color: rgba(51, 255, 136, 0.8);
             padding: 6px;
             font-family: monospace;
-            cursor: pointer;
+            cursor: none;
             font-size: 0.65rem;
             letter-spacing: 0.05em;
         }
@@ -261,18 +264,28 @@
     <script>
         // Anti-inspection / anti-tamper defensive hardening
         (function() {
-            // Disable devtools shortcut keys & source inspection triggers
             window.addEventListener('keydown', (e) => {
                 if (
                     e.key === 'F12' ||
                     (e.ctrlKey && e.shiftKey && ['I', 'J', 'C'].includes(e.key.toUpperCase())) ||
                     (e.ctrlKey && e.key.toUpperCase() === 'U') ||
-                    (e.ctrlKey && e.key.toUpperCase() === 'S')
+                    (e.ctrlKey && e.key.toUpperCase() === 'S') ||
+                    (e.ctrlKey && ['=', '-', '+', '0', 'NumPadAdd', 'NumPadSubtract'].includes(e.key))
                 ) {
                     e.preventDefault();
                     return false;
                 }
             }, true);
+
+            // Block wheel/pinch zoom attempts
+            window.addEventListener('wheel', (e) => {
+                if (e.ctrlKey || e.metaKey) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+
+            window.addEventListener('gesturestart', (e) => e.preventDefault(), true);
+            window.addEventListener('gesturechange', (e) => e.preventDefault(), true);
 
             // Periodic debugger trap / obfuscation check
             setInterval(() => {
@@ -285,7 +298,6 @@
                 }
             }, 2500);
 
-            // Freeze critical state prototypes or obfuscate drop expectations runtime lookup
             Object.freeze(window.performance);
         })();
 
@@ -293,6 +305,15 @@
         window.addEventListener('mousemove', (e) => {
             cursorEl.style.left = e.clientX + 'px';
             cursorEl.style.top = e.clientY + 'px';
+            document.body.style.cursor = 'none';
+        });
+
+        // Hide default system cursor completely across window bounds
+        document.addEventListener('mouseleave', () => {
+            cursorEl.style.opacity = '0';
+        });
+        document.addEventListener('mouseenter', () => {
+            cursorEl.style.opacity = '1';
         });
 
         // Audio initialization (active ONLY after menu tear complete)
