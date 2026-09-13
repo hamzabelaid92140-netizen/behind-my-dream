@@ -473,6 +473,33 @@
         horizontalBeam.position.y = 25;
         crossGroup.add(horizontalBeam);
 
+        function create62Texture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 512;
+            canvas.height = 512;
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, 512, 512);
+            ctx.font = 'bold 220px monospace';
+            ctx.fillStyle = '#ff3355';
+            ctx.shadowColor = '#ff0000';
+            ctx.shadowBlur = 30;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('62', 256, 256);
+            const tex = new THREE.CanvasTexture(canvas);
+            tex.needsUpdate = true;
+            return tex;
+        }
+        const text62Geo = new THREE.PlaneGeometry(8, 8);
+        const text62Mat = new THREE.MeshBasicMaterial({ 
+            map: create62Texture(), 
+            transparent: true,
+            side: THREE.DoubleSide
+        });
+        const text62Mesh = new THREE.Mesh(text62Geo, text62Mat);
+        text62Mesh.position.set(0, 20, 1.68);
+        crossGroup.add(text62Mesh);
+
         const goreMat = new THREE.MeshStandardMaterial({
             color: 0x660a12,
             roughness: 0.2,
