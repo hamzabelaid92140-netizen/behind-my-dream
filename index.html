@@ -13,6 +13,8 @@
             overflow: hidden;
             background-color: #000000;
             cursor: none;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         canvas {
@@ -97,7 +99,7 @@
             background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)"/></svg>');
         }
 
-        /* Pure visual organic meat core menu (no text, pulse/sphincter/flesh tear node) */
+        /* Pure visual organic meat core menu (less gore, atmospheric shadow-breathing focal mass) */
         .meat-menu-overlay {
             position: fixed;
             top: 0;
@@ -105,7 +107,7 @@
             width: 100vw;
             height: 100vh;
             z-index: 500;
-            background: radial-gradient(circle at center, rgba(35, 4, 7, 0.98) 0%, rgba(10, 1, 2, 0.99) 70%, #000 100%);
+            background: radial-gradient(circle at center, rgba(18, 4, 7, 0.95) 0%, rgba(5, 1, 2, 0.98) 70%, #000 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -120,17 +122,17 @@
         }
 
         .meat-panel {
-            width: 440px;
-            height: 440px;
+            width: 380px;
+            height: 380px;
             border-radius: 50%;
             background: 
-                radial-gradient(circle at 35% 35%, rgba(255, 60, 80, 0.25) 0%, transparent 40%),
-                repeating-radial-gradient(circle at center, rgba(140, 15, 25, 0.35) 0px, rgba(40, 4, 8, 0.8) 12px, transparent 24px);
-            border: 2px solid rgba(200, 20, 35, 0.6);
+                radial-gradient(circle at 40% 40%, rgba(140, 30, 45, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at center, rgba(60, 10, 18, 0.7) 0%, rgba(15, 3, 5, 0.95) 85%);
+            border: 1px solid rgba(130, 20, 30, 0.35);
             box-shadow: 
-                0 0 70px rgba(220, 0, 30, 0.35), 
-                inset 0 0 60px rgba(120, 0, 15, 0.8),
-                0 0 0 15px rgba(20, 2, 4, 0.85);
+                0 0 50px rgba(160, 0, 25, 0.2), 
+                inset 0 0 50px rgba(50, 0, 10, 0.9),
+                0 0 0 25px rgba(5, 1, 2, 0.9);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -144,20 +146,20 @@
         .meat-panel::before {
             content: '';
             position: absolute;
-            inset: -20%;
+            inset: -15%;
             background: 
-                radial-gradient(circle, rgba(255, 90, 100, 0.35) 0%, transparent 60%),
-                repeating-conic-gradient(from 0deg, rgba(180, 20, 35, 0.15) 0deg 15deg, transparent 15deg 30deg);
-            animation: organicPulse 4s infinite alternate ease-in-out;
+                radial-gradient(circle, rgba(180, 40, 55, 0.2) 0%, transparent 65%),
+                repeating-conic-gradient(from 0deg, rgba(100, 15, 25, 0.08) 0deg 20deg, transparent 20deg 40deg);
+            animation: organicPulse 5s infinite alternate ease-in-out;
             pointer-events: none;
         }
 
         .meat-core-pupil {
-            width: 90px;
-            height: 90px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(255, 20, 40, 0.9) 0%, rgba(80, 0, 10, 0.95) 70%, #050001 100%);
-            box-shadow: 0 0 35px rgba(255, 0, 40, 0.8), inset 0 0 15px rgba(255, 150, 160, 0.5);
+            background: radial-gradient(circle, rgba(180, 25, 35, 0.7) 0%, rgba(40, 5, 10, 0.9) 70%, #030001 100%);
+            box-shadow: 0 0 25px rgba(180, 0, 30, 0.5), inset 0 0 10px rgba(220, 100, 110, 0.3);
             transition: transform 0.15s ease, box-shadow 0.15s ease;
             position: relative;
             z-index: 2;
@@ -166,15 +168,15 @@
         .meat-core-pupil::after {
             content: '';
             position: absolute;
-            inset: 30%;
+            inset: 35%;
             border-radius: 50%;
             background: #000;
-            box-shadow: inset 0 0 8px rgba(255, 0, 40, 0.6);
+            box-shadow: inset 0 0 6px rgba(150, 0, 30, 0.5);
         }
 
         @keyframes organicPulse {
-            0% { transform: scale(0.97) rotate(0deg); opacity: 0.8; }
-            100% { transform: scale(1.05) rotate(5deg); opacity: 1; }
+            0% { transform: scale(0.97) rotate(0deg); opacity: 0.7; }
+            100% { transform: scale(1.04) rotate(4deg); opacity: 0.95; }
         }
 
         /* Enigmatic minimal drop zone */
@@ -232,7 +234,7 @@
         }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
 
     <div class="custom-cursor" id="customCursor"></div>
     <div class="eyelid-overlay" id="eyelid"></div>
@@ -257,6 +259,36 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <script>
+        // Anti-inspection / anti-tamper defensive hardening
+        (function() {
+            // Disable devtools shortcut keys & source inspection triggers
+            window.addEventListener('keydown', (e) => {
+                if (
+                    e.key === 'F12' ||
+                    (e.ctrlKey && e.shiftKey && ['I', 'J', 'C'].includes(e.key.toUpperCase())) ||
+                    (e.ctrlKey && e.key.toUpperCase() === 'U') ||
+                    (e.ctrlKey && e.key.toUpperCase() === 'S')
+                ) {
+                    e.preventDefault();
+                    return false;
+                }
+            }, true);
+
+            // Periodic debugger trap / obfuscation check
+            setInterval(() => {
+                const start = performance.now();
+                debugger;
+                const delta = performance.now() - start;
+                if (delta > 100) {
+                    document.body.innerHTML = '';
+                    window.location.reload();
+                }
+            }, 2500);
+
+            // Freeze critical state prototypes or obfuscate drop expectations runtime lookup
+            Object.freeze(window.performance);
+        })();
+
         const cursorEl = document.getElementById('customCursor');
         window.addEventListener('mousemove', (e) => {
             cursorEl.style.left = e.clientX + 'px';
@@ -274,12 +306,12 @@
         function startAudio() {
             if (!audioStarted) {
                 audioStarted = true;
-                bgMusic.play().catch(e => console.log(e));
-                breathSound.play().catch(e => console.log(e));
+                bgMusic.play().catch(e => {});
+                breathSound.play().catch(e => {});
             }
         }
 
-        // Pure visual meat sphincter / membrane tearing state (zero text)
+        // Pure visual meat sphincter / membrane tearing state (less gore, zero text)
         let tearCount = 0;
         const maxTears = 5;
         let lastClickTime = 0;
@@ -290,18 +322,17 @@
 
         const tearClipPaths = [
             'circle(50% at center)',
-            'polygon(10% 8%, 92% 5%, 88% 95%, 8% 90%)',
-            'polygon(20% 15%, 82% 10%, 78% 88%, 18% 85%)',
-            'polygon(32% 28%, 70% 25%, 65% 72%, 28% 70%)',
-            'polygon(43% 40%, 57% 42%, 55% 58%, 42% 55%)',
+            'polygon(12% 10%, 90% 8%, 86% 92%, 10% 88%)',
+            'polygon(22% 18%, 80% 14%, 75% 85%, 20% 82%)',
+            'polygon(34% 30%, 68% 28%, 64% 70%, 30% 68%)',
+            'polygon(44% 42%, 56% 44%, 54% 56%, 43% 54%)',
             'polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%)'
         ];
 
         meatPanelEl.addEventListener('click', () => {
             const now = performance.now();
             if (now - lastClickTime < cooldownMs) {
-                // Micro-recoil feedback when on cooldown (pure visual jitter)
-                meatPanelEl.style.transform = `scale(0.92) translateX(${(Math.random() - 0.5) * 12}px)`;
+                meatPanelEl.style.transform = `scale(0.93) translateX(${(Math.random() - 0.5) * 10}px)`;
                 setTimeout(() => {
                     meatPanelEl.style.transform = 'scale(1) translateX(0)';
                 }, 100);
@@ -313,10 +344,10 @@
 
             const progress = tearCount / maxTears;
             meatPanelEl.style.clipPath = tearClipPaths[tearCount] || tearClipPaths[tearClipPaths.length - 1];
-            meatPanelEl.style.transform = `scale(${1 - progress * 0.18}) rotate(${(Math.random() - 0.5) * 16}deg)`;
-            meatPanelEl.style.filter = `hue-rotate(${tearCount * 45}deg) contrast(${1 + progress * 2.2}) brightness(${1 - progress * 0.25})`;
-            meatPupilEl.style.transform = `scale(${1 + progress * 0.8}) translate(${(Math.random() - 0.5) * 15}px, ${(Math.random() - 0.5) * 15}px)`;
-            meatPupilEl.style.boxShadow = `0 0 ${35 + tearCount * 18}px rgba(255, 0, 50, ${0.8 + progress * 0.2})`;
+            meatPanelEl.style.transform = `scale(${1 - progress * 0.18}) rotate(${(Math.random() - 0.5) * 12}deg)`;
+            meatPanelEl.style.filter = `hue-rotate(${tearCount * 25}deg) contrast(${1 + progress * 1.5}) brightness(${1 - progress * 0.2})`;
+            meatPupilEl.style.transform = `scale(${1 + progress * 0.6}) translate(${(Math.random() - 0.5) * 10}px, ${(Math.random() - 0.5) * 10}px)`;
+            meatPupilEl.style.boxShadow = `0 0 ${25 + tearCount * 12}px rgba(180, 0, 30, ${0.5 + progress * 0.3})`;
 
             if (tearCount >= maxTears) {
                 meatPanelEl.style.transform = 'scale(0) rotate(180deg)';
@@ -332,7 +363,6 @@
         scene.background = new THREE.Color(0x060606);
         scene.fog = new THREE.FogExp2(0x030303, 0.010);
 
-        // Rapproché plus la croix (rapprochée en z)
         const camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 1000);
         camera.position.set(0, 1.8, 8);
         camera.lookAt(0, 1.8, -45);
@@ -403,7 +433,6 @@
         path.position.y = -1.94;
         scene.add(path);
 
-        // Blood-red gore/dreamcore neon cross closer to camera (-65 z instead of -250)
         const crossGroup = new THREE.Group();
         const crossMat = new THREE.MeshStandardMaterial({ 
             color: 0x2b0507, 
@@ -423,7 +452,6 @@
         horizontalBeam.position.y = 25;
         crossGroup.add(horizontalBeam);
 
-        // Wet organic fleshy hanging filaments on cross structure
         const goreMat = new THREE.MeshStandardMaterial({
             color: 0x660a12,
             roughness: 0.2,
@@ -544,7 +572,11 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
 
-        // Enigmatic minimal drop logic (no helper text clues)
+        // Obfuscated client-side check preventing trivial source readout extraction of payload/keys
+        const _k = [0x69, 0x20, 0x63, 0x61, 0x6e, 0x27, 0x74, 0x20, 0x72, 0x65, 0x6d, 0x65, 0x6d, 0x62, 0x65, 0x72];
+        const _out = [0x79, 0x6f, 0x75, 0x27, 0x72, 0x65, 0x20, 0x6e, 0x6f, 0x74, 0x20, 0x69, 0x6e, 0x20, 0x74, 0x68, 0x65, 0x20, 0x72, 0x69, 0x67, 0x68, 0x74, 0x20, 0x70, 0x6c, 0x61, 0x63, 0x65, 0x0a, 0x79, 0x6f, 0x75, 0x27, 0x72, 0x65, 0x20, 0x73, 0x74, 0x61, 0x72, 0x74, 0x69, 0x6e, 0x67, 0x20, 0x74, 0x6f, 0x20, 0x75, 0x6e, 0x64, 0x65, 0x72, 0x73, 0x74, 0x61, 0x6e, 0x64];
+        function _decode(arr) { return arr.map(c => String.fromCharCode(c)).join(''); }
+
         let printerUnlocked = false;
         const hudEl = document.getElementById('printerHud');
         const dropZoneEl = document.getElementById('dropZone');
@@ -574,9 +606,8 @@
 
             const reader = new FileReader();
             reader.onload = function(evt) {
-                const content = evt.target.result.trim().toLowerCase();
-                const expected = "i can't remember";
-                if (content === expected || content.replace(/['']/g, "'") === expected) {
+                const content = evt.target.result.trim().toLowerCase().replace(/['']/g, "'");
+                if (content === _decode(_k).replace(/['']/g, "'")) {
                     printerUnlocked = true;
                     hudEl.classList.add('unlocked');
                     dropZoneEl.textContent = '[ READY ]';
@@ -588,7 +619,7 @@
 
         downloadBtnEl.addEventListener('click', () => {
             if (!printerUnlocked) return;
-            const fileContent = "you're not in the right place\nyou're starting to understand";
+            const fileContent = _decode(_out);
             const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
